@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MessagePattern {
 
-	String value() default "\n";
+	String value();
 
 }
