@@ -1,6 +1,7 @@
 package pl.rwroblewski.collibrainterview.controller;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +48,17 @@ public class MessageController {
 			.filter(entry -> entry.getKey().matches()).findFirst();
 		if (handler.isPresent()) {
 			Method handlerMethod = handler.get().getValue();
-			return handlerMethod.invoke(this, handler.get().getKey().group(1));
+			Matcher matcher = handler.get().getKey();
+			Object[] params = new String[matcher.groupCount()];
+			for (int i=0; i<matcher.groupCount(); i++) {
+				params[i] = matcher.group(i+1);
+			}
+			try {
+				return handlerMethod.invoke(this, params).toString();
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		return DIDNT_UNDERSTAND;
