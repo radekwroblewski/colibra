@@ -17,17 +17,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
+import pl.rwroblewski.collibrainterview.exception.ValidationException;
 import pl.rwroblewski.collibrainterview.repository.SessionRepository;
+import pl.rwroblewski.collibrainterview.service.NodeService;
 
 @Component
-public class MessageHandlerImpl implements MyMessageHandler {
+public class MessageHandlerImpl implements MessageHandler {
 
     private static final String ALPHANUMERIC_STRING = "([a-zA-Z0-9/-]+)";
+
+    private static final String NUMERIC_STRING = "([0-9]+)";
 
     private String DIDNT_UNDERSTAND = "SORRY, I DIDN'T UNDERSTAND THAT";
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private NodeService nodeService;
+
 
     private static Map<Pattern, Method> MESSAGE_HANDLERS = getControllerMethods(MessageHandlerImpl.class);
 
@@ -44,16 +52,17 @@ public class MessageHandlerImpl implements MyMessageHandler {
     }
 
     @Override
-    public String handleMessage(WebSocketSession session, String message) {
+    public String handleMessage(WebSocketSession session, String message) throws ValidationException {
         Optional<? extends Entry<Matcher, Method>> handler = MESSAGE_HANDLERS.entrySet().stream()
                 .map(entry -> new SimpleEntry<Matcher, Method>(entry.getKey().matcher(message), entry.getValue()))
                 .filter(entry -> entry.getKey().matches()).findFirst();
         if (handler.isPresent()) {
             Method handlerMethod = handler.get().getValue();
             Matcher matcher = handler.get().getKey();
-            Object[] params = new String[matcher.groupCount()];
-            for (int i = 0; i < matcher.groupCount(); i++) {
-                params[i] = matcher.group(i + 1);
+            Object[] params = new Object[matcher.groupCount()+1];
+            params[0] = session;
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                params[i] = matcher.group(i);
             }
             try {
                 return handlerMethod.invoke(this, params).toString();
@@ -75,6 +84,25 @@ public class MessageHandlerImpl implements MyMessageHandler {
     @MessagePattern("BYE MATE!")
     public String goodbye(WebSocketSession session) {
         return sessionRepository.terminateSession(session);
+    }
+
+    @MessagePattern("ADD NODE " + ALPHANUMERIC_STRING)
+    public String addNode(WebSocketSession session, String name) throws ValidationException {
+        return nodeService.addNode(name);
+    }
+    @MessagePattern("ADD EDGE " + ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING + " "+ NUMERIC_STRING)
+    public String addEdge(WebSocketSession session, String from, String to, String weight) throws ValidationException {
+        return nodeService.addEdge(from, to, Integer.parseInt(weight));
+    }
+    
+    @MessagePattern("REMOVE NODE " + ALPHANUMERIC_STRING)
+    public String removeNode(WebSocketSession session, String name) throws ValidationException {
+        return nodeService.removeNode(name);
+    }
+    
+    @MessagePattern("REMOVE EDGE " + ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING)
+    public String removeEdge(WebSocketSession session, String from, String to, String weight) throws ValidationException {
+        return nodeService.removeEdge(from, to);
     }
 
 }

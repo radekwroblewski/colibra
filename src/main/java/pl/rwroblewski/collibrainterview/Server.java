@@ -14,8 +14,10 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import pl.rwroblewski.collibrainterview.controller.MyMessageHandler;
+import pl.rwroblewski.collibrainterview.controller.MessageHandler;
+import pl.rwroblewski.collibrainterview.exception.ValidationException;
 import pl.rwroblewski.collibrainterview.repository.SessionRepository;
+import pl.rwroblewski.collibrainterview.service.ValidationErrorHandler;
 
 @Component
 public class Server extends TextWebSocketHandler implements WebSocketHandler {
@@ -23,14 +25,30 @@ public class Server extends TextWebSocketHandler implements WebSocketHandler {
     private static final long TIMEOUT = 30000;
 
     @Autowired
-    private MyMessageHandler messageHandler;
+    private MessageHandler messageHandler;
 
     @Autowired
     private SessionRepository sessionRepository;
+    
+    @Autowired
+    private ValidationErrorHandler errorHandler;
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
-        messageHandler.handleMessage(session, message.getPayload());
+        sessionRepository.registerCommunication(session);
+        startSessionTimer(session);
+        String response ;
+        try {
+            response= messageHandler.handleMessage(session, message.getPayload());
+        } catch (ValidationException e) {
+            response = errorHandler.getErrorMessage(e);
+        }
+        try {
+            sendMessage(session, response);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
