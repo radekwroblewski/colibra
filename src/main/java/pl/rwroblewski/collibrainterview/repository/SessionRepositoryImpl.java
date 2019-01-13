@@ -28,7 +28,7 @@ public class SessionRepositoryImpl implements SessionRepository {
         }
         return "";
     }
-    
+
     @Override
     public void setSessionName(WebSocketSession session, String name) {
         synchronized (SESSION_PARAMS) {
@@ -38,14 +38,14 @@ public class SessionRepositoryImpl implements SessionRepository {
             }
         }
     }
-    
+
     @Override
     public void registerSession(WebSocketSession session) {
         synchronized (SESSION_PARAMS) {
             SESSION_PARAMS.put(session, new SessionParams());
         }
     }
-    
+
     @Override
     public void registerCommunication(WebSocketSession session) {
         synchronized (SESSION_PARAMS) {
@@ -55,7 +55,7 @@ public class SessionRepositoryImpl implements SessionRepository {
             }
         }
     }
-    
+
     @Override
     public Instant getLastCommunicationTime(WebSocketSession session) {
         synchronized (SESSION_PARAMS) {

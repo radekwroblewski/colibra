@@ -1,5 +1,7 @@
 package pl.rwroblewski.collibrainterview.controller;
 
+import static java.util.Objects.nonNull;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.AbstractMap.SimpleEntry;
@@ -36,7 +38,6 @@ public class MessageHandlerImpl implements MessageHandler {
     @Autowired
     private NodeService nodeService;
 
-
     private static Map<Pattern, Method> MESSAGE_HANDLERS = getControllerMethods(MessageHandlerImpl.class);
 
     public static Map<Pattern, Method> getControllerMethods(final Class<?> type) {
@@ -59,13 +60,14 @@ public class MessageHandlerImpl implements MessageHandler {
         if (handler.isPresent()) {
             Method handlerMethod = handler.get().getValue();
             Matcher matcher = handler.get().getKey();
-            Object[] params = new Object[matcher.groupCount()+1];
+            Object[] params = new Object[matcher.groupCount() + 1];
             params[0] = session;
             for (int i = 1; i <= matcher.groupCount(); i++) {
                 params[i] = matcher.group(i);
             }
             try {
-                return handlerMethod.invoke(this, params).toString();
+                Object response = handlerMethod.invoke(this, params);
+                return nonNull(response) ? response.toString() : null;
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -90,19 +92,30 @@ public class MessageHandlerImpl implements MessageHandler {
     public String addNode(WebSocketSession session, String name) throws ValidationException {
         return nodeService.addNode(name);
     }
-    @MessagePattern("ADD EDGE " + ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING + " "+ NUMERIC_STRING)
+
+    @MessagePattern("ADD EDGE " + ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING + " " + NUMERIC_STRING)
     public String addEdge(WebSocketSession session, String from, String to, String weight) throws ValidationException {
         return nodeService.addEdge(from, to, Integer.parseInt(weight));
     }
-    
+
     @MessagePattern("REMOVE NODE " + ALPHANUMERIC_STRING)
     public String removeNode(WebSocketSession session, String name) throws ValidationException {
         return nodeService.removeNode(name);
     }
-    
+
     @MessagePattern("REMOVE EDGE " + ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING)
-    public String removeEdge(WebSocketSession session, String from, String to, String weight) throws ValidationException {
+    public String removeEdge(WebSocketSession session, String from, String to)
+            throws ValidationException {
         return nodeService.removeEdge(from, to);
     }
 
+    @MessagePattern("SHORTEST PATH "+ALPHANUMERIC_STRING + " " + ALPHANUMERIC_STRING)
+    public String shortestPath(WebSocketSession session, String from, String to) throws ValidationException {
+        return nodeService.shortestPath(from, to);
+    }
+    
+    @MessagePattern("CLOSER THAN "+NUMERIC_STRING + " " + ALPHANUMERIC_STRING)
+    public String closerThan(WebSocketSession session, String weight, String from) throws ValidationException {
+        return nodeService.closerThan(from, Integer.parseInt(weight));
+    }
 }

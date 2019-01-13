@@ -5,12 +5,12 @@ import static java.util.Objects.isNull;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -20,7 +20,8 @@ import pl.rwroblewski.collibrainterview.repository.SessionRepository;
 import pl.rwroblewski.collibrainterview.service.ValidationErrorHandler;
 
 @Component
-public class Server extends TextWebSocketHandler implements WebSocketHandler {
+public class SocketHandler extends TextWebSocketHandler {
+    private static final Logger LOGGER = Logger.getLogger(SocketHandler.class.getName());
 
     private static final long TIMEOUT = 30000;
 
@@ -29,7 +30,7 @@ public class Server extends TextWebSocketHandler implements WebSocketHandler {
 
     @Autowired
     private SessionRepository sessionRepository;
-    
+
     @Autowired
     private ValidationErrorHandler errorHandler;
 
@@ -37,9 +38,9 @@ public class Server extends TextWebSocketHandler implements WebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) {
         sessionRepository.registerCommunication(session);
         startSessionTimer(session);
-        String response ;
+        String response;
         try {
-            response= messageHandler.handleMessage(session, message.getPayload());
+            response = messageHandler.handleMessage(session, message.getPayload());
         } catch (ValidationException e) {
             response = errorHandler.getErrorMessage(e);
         }
@@ -89,7 +90,7 @@ public class Server extends TextWebSocketHandler implements WebSocketHandler {
     }
 
     private void sendMessage(WebSocketSession session, String message) throws IOException {
-        System.out.println(String.format("%s: %s", session.getId(), message));
+        LOGGER.info(String.format("Sending to: '%s'; message: '%s'", session.getId(), message));
         session.sendMessage(new TextMessage(message + "\n"));
     }
 }

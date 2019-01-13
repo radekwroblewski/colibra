@@ -11,21 +11,21 @@ import pl.rwroblewski.collibrainterview.repository.NodeRepository;
 @Service
 public class NodeValidatorImpl implements NodeValidator {
 
-	@Autowired
-	private NodeRepository nodeRepository;
+    @Autowired
+    private NodeRepository nodeRepository;
 
-	@Override
-	public void validateNotExists(String nodeName) throws ValidationException {
-		if (nodeRepository.containsNode(nodeName)) {
-			throw new DuplicateException();
-		}
-	}
+    @Override
+    public void validateNotExists(String nodeName) throws ValidationException {
+        if (nodeRepository.containsNode(nodeName)) {
+            throw new DuplicateException();
+        }
+    }
 
-	@Override
-	public void validateExists(String nodeName) throws ValidationException {
-		if (!nodeRepository.containsNode(nodeName)) {
-			throw new NotFoundException();
-		}
+    @Override
+    public void validateExists(String nodeName) throws ValidationException {
+        if (!nodeRepository.containsNode(nodeName)) {
+            throw new NotFoundException();
+        }
 
-	}
+    }
 }

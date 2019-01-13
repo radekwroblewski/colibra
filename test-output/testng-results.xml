@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="6" passed="6">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="640" started-at="2019-01-13T13:30:28Z" finished-at="2019-01-13T13:30:28Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="640" started-at="2019-01-13T13:30:28Z" finished-at="2019-01-13T13:30:28Z">
+      <class name="pl.rwroblewski.collibrainterview.controller.MessageHandlerTest">
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="500" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="testAddEdge()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testAddEdge" duration-ms="62" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAddEdge -->
+        <test-method status="PASS" signature="testAddNode()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testAddNode" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testAddNode -->
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="testRemoveEdge()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testRemoveEdge" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRemoveEdge -->
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="16" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="testSignin()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testSignin" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSignin -->
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="testRemoveNode()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testRemoveNode" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testRemoveNode -->
+        <test-method status="PASS" signature="init()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="init" is-config="true" duration-ms="15" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- init -->
+        <test-method status="PASS" signature="testSignout()[pri:0, instance:pl.rwroblewski.collibrainterview.controller.MessageHandlerTest@27c20538]" name="testSignout" duration-ms="0" started-at="2019-01-13T14:30:28Z" finished-at="2019-01-13T14:30:28Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSignout -->
+      </class> <!-- pl.rwroblewski.collibrainterview.controller.MessageHandlerTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
